@@ -31,7 +31,7 @@
       ColorChangeManager = function(config){
         var defaults = {
           neighborsFunction: getNeighbors,
-          changeFunction: black,
+          changeFunction: currentColorFunction,
           decreaseFunction: third
         };
         for(prop in config) {
@@ -49,18 +49,7 @@
           }
         }
       },
-      
-      // changeWithNeighbors = function(centerCoords, neighborsFunction, changeFunction, decreaseFunction, startVal) {
-      //   if(startVal > .01) {
-      //     var neighbors = neighborsFunction(centerCoords),
-      //         idx = neighbors.length;
-      //     changeFunction(getCellFromXY(centerCoords), startVal);
-      //     while (idx--) {
-      //       changeWithNeighbors(neighbors[idx], neighborsFunction, changeFunction, decreaseFunction, decreaseFunction(startVal));
-      //     };
-      //   }
-      // },
-      
+            
       black = function(element, increment) {
         colorChange(element, function(color) {
           return color.darkenByAmount(increment);
@@ -101,9 +90,7 @@
     var center = $(this),
         centerXY = center.attr('id').split('-'),
         centerCoords = [parseInt(centerXY[0]), parseInt(centerXY[1])],
-        changeManager = new ColorChangeManager({
-          changeFunction: currentColorFunction
-        });
+        changeManager = new ColorChangeManager();
     
     changeManager.run(centerCoords, .2);
   });
