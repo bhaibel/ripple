@@ -35,10 +35,23 @@
       %header
       #main{ :role => 'main' }
         %table
-          -100.times do
+          -35.times do |i|
             %tr
-              -100.times do
-                %td
+              -35.times do |j|
+                %td{:id => "#{j}-#{i}"}
+        %form#controls
+          %fieldset#colors
+            %legend Colors
+            %input(type='radio' name='colors' value='black' checked)
+            %label(for='colors-black') black
+            %input(type='radio' name='colors' value='red')
+            %label(for='colors-red') red
+            %input(type='radio' name='colors' value='green')
+            %label(for='colors-red') green
+            %input(type='radio' name='colors' value='blue')
+            %label(for='colors-red') blue
+            %input(type='radio' name='colors' value='white')
+            %label(for='colors-red') white
       %footer
       
     -# 

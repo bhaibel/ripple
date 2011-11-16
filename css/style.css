@@ -372,3 +372,10 @@ input:invalid, textarea:invalid {
     page-break-after: avoid;
   }
 }
+/* line 33, ../sass/style.sass */
+td {
+  width: 15px;
+  height: 15px;
+  border: 1px #eeeeee solid;
+  background-color: #777777;
+}
