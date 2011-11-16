@@ -87,9 +87,8 @@
       };
         
   $('td').click(function() {
-    var center = $(this),
-        centerXY = center.attr('id').split('-'),
-        centerCoords = [parseInt(centerXY[0]), parseInt(centerXY[1])],
+    var center = $(this).attr('id').split('-'),
+        centerCoords = [parseInt(center[0]), parseInt(center[1])],
         changeManager = new ColorChangeManager();
     
     changeManager.run(centerCoords, .2);
