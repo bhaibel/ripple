@@ -27,17 +27,40 @@
       getCellFromXY = function(xy) {
         return $(cellId(xy));
       },
-      changeWithNeighbors = function(centerCoords, neighborsFunction, changeFunction, decreaseFunction, startVal) {
-        if(startVal > .01) {
-          var neighbors = neighborsFunction(centerCoords),
-              idx = neighbors.length;
-          changeFunction(getCellFromXY(centerCoords), startVal);
-          while (idx--) {
-            changeWithNeighbors(neighbors[idx], neighborsFunction, changeFunction, decreaseFunction, decreaseFunction(startVal));
-          };
+      
+      ColorChangeManager = function(config){
+        var defaults = {
+          neighborsFunction: getNeighbors,
+          changeFunction: black,
+          decreaseFunction: third
+        };
+        for(prop in config) {
+          defaults[prop] = config[prop]
+        }
+        
+        this.run = function(coords, increment){
+          if(increment > .01) {
+            var neighbors = defaults.neighborsFunction(coords),
+                idx = neighbors.length;
+            defaults.changeFunction(getCellFromXY(coords), increment)
+            while(idx--) {
+              this.run(neighbors[idx], defaults.decreaseFunction(increment));
+            }
+          }
         }
       },
-            
+      
+      // changeWithNeighbors = function(centerCoords, neighborsFunction, changeFunction, decreaseFunction, startVal) {
+      //   if(startVal > .01) {
+      //     var neighbors = neighborsFunction(centerCoords),
+      //         idx = neighbors.length;
+      //     changeFunction(getCellFromXY(centerCoords), startVal);
+      //     while (idx--) {
+      //       changeWithNeighbors(neighbors[idx], neighborsFunction, changeFunction, decreaseFunction, decreaseFunction(startVal));
+      //     };
+      //   }
+      // },
+      
       black = function(element, increment) {
         colorChange(element, function(color) {
           return color.darkenByAmount(increment);
@@ -77,9 +100,12 @@
   $('td').click(function() {
     var center = $(this),
         centerXY = center.attr('id').split('-'),
-        centerCoords = [parseInt(centerXY[0]), parseInt(centerXY[1])];
+        centerCoords = [parseInt(centerXY[0]), parseInt(centerXY[1])],
+        changeManager = new ColorChangeManager({
+          changeFunction: currentColorFunction
+        });
     
-    changeWithNeighbors(centerCoords, getNeighbors, currentColorFunction, third, .2);
+    changeManager.run(centerCoords, .2);
   });
   
   $('#colors').change(function(){
