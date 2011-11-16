@@ -29,10 +29,12 @@
       },
       changeWithNeighbors = function(centerCoords, neighborsFunction, changeFunction, decreaseFunction, startVal) {
         if(startVal > .01) {
+          var neighbors = neighborsFunction(centerCoords),
+              idx = neighbors.length;
           changeFunction(getCellFromXY(centerCoords), startVal);
-          $.each(neighborsFunction(centerCoords), function() {
-            changeWithNeighbors(this, neighborsFunction, changeFunction, decreaseFunction, decreaseFunction(startVal));
-          });
+          while (idx--) {
+            changeWithNeighbors(neighbors[idx], neighborsFunction, changeFunction, decreaseFunction, decreaseFunction(startVal));
+          };
         }
       },
             
